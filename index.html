@@ -7,9 +7,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background-color: #fbf8f1; color: #5c1a1b; font-family: 'Georgia', serif; overflow-x: hidden; }
-        .section-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; padding: 2rem; opacity: 0; transition: opacity 0.5s ease-out; }
-        .animate-left { transform: translateX(-100px); transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-        .animate-right { transform: translateX(100px); transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        /* FIX: Removed the opacity: 0 from the main container so it is no longer invisible */
+        .section-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; padding: 2rem; transition: opacity 0.5s ease-out; }
+        
+        /* FIX: Moved opacity: 0 to the individual sliding elements instead */
+        .animate-left { transform: translateX(-100px); opacity: 0; transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .animate-right { transform: translateX(100px); opacity: 0; transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        
         .in-view .animate-left, .in-view .animate-right { transform: translateX(0); opacity: 1; }
         .scroll-out { transform: translateY(-150px); opacity: 0 !important; transition: all 1s ease-out; }
         .golden-text { background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7); -webkit-background-clip: text; background-clip: text; color: transparent; }
@@ -62,7 +66,7 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) { entry.target.classList.add('in-view'); entry.target.classList.remove('scroll-out'); }
             });
-        }, { threshold: 0.3 });
+        }, { threshold: 0.15 });
         sections.forEach(section => observer.observe(section));
         window.addEventListener('scroll', () => {
             sections.forEach(section => {
