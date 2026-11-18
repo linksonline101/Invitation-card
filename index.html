@@ -3,76 +3,535 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mohit & Shikha Wedding Invitation</title>
+    <title>Mohit & Shikha - Wedding Invitation</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Tiro+Devanagari+Hindi&family=Cinzel:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        maroon: '#780000',
+                        deepred: '#900000',
+                        gold: '#C5A059',
+                        lightgold: '#E3C788',
+                        ivory: '#FAF7EE',
+                    },
+                    fontFamily: {
+                        'serif': ['"Playfair Display"', 'serif'],
+                        'cursive': ['"Great Vibes"', 'cursive'],
+                        'hindi': ['"Tiro Devanagari Hindi"', 'serif'],
+                        'cinzel': ['"Cinzel"', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        body { background-color: #fbf8f1; color: #5c1a1b; font-family: 'Georgia', serif; overflow-x: hidden; }
-        /* FIX: Removed the opacity: 0 from the main container so it is no longer invisible */
-        .section-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; padding: 2rem; transition: opacity 0.5s ease-out; }
+        body, html {
+            background-color: #FAF7EE;
+            color: #780000;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Full Screen Section Containers */
+        .invite-section {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        /* Parallax Wrapper for Exit Animation */
+        .parallax-wrapper {
+            width: 100%;
+            height: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            will-change: transform, opacity;
+            padding: 2rem 1rem;
+        }
+
+        /* Background Pattern (Subtle Mandala) */
+        .bg-pattern {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54.627 0l.83.83-54.627 54.627-.83-.83L54.627 0zM0 54.627l.83.83L60 1.66 59.17.83 0 54.627z' fill='%23C5A059' fill-opacity='0.08' fill-rule='evenodd'/%3E%3C/svg%3E");
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Base Animation Element Styles (ENTRY) */
+        .anim-elem {
+            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 1.2s ease-out;
+            will-change: transform, opacity;
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+            opacity: 0; /* Hidden by default */
+        }
+
+        .hidden-left { transform: translateX(-80px); }
+        .hidden-right { transform: translateX(80px); }
         
-        /* FIX: Moved opacity: 0 to the individual sliding elements instead */
-        .animate-left { transform: translateX(-100px); opacity: 0; transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-        .animate-right { transform: translateX(100px); opacity: 0; transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-        
-        .in-view .animate-left, .in-view .animate-right { transform: translateX(0); opacity: 1; }
-        .scroll-out { transform: translateY(-150px); opacity: 0 !important; transition: all 1s ease-out; }
-        .golden-text { background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .is-visible {
+            transform: translate(0, 0);
+            opacity: 1;
+        }
+
+        /* Delays */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-400 { transition-delay: 400ms; }
+        .delay-500 { transition-delay: 500ms; }
+
+        /* Utility Elements */
+        .dotted-line {
+            border-bottom: 2px dotted #C5A059;
+            flex-grow: 1;
+            margin: 0 15px;
+            position: relative;
+            top: -6px;
+        }
+
+        /* Section 3 Red Background & Border */
+        .bg-ritual {
+            background-color: #8B0000;
+            background-image: radial-gradient(#900000 10%, #600000 90%);
+            color: #FAF7EE;
+        }
+        .border-ritual {
+            border: 12px solid transparent;
+            border-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='6' fill='none' stroke='%23FAF7EE' stroke-width='2'/%3E%3Ccircle cx='20' cy='20' r='2' fill='%23FAF7EE'/%3E%3C/svg%3E") 30 stretch;
+            padding: 2rem;
+            border-radius: 8px;
+        }
+
+        /* SVG Overlays */
+        .arch-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .flora-fauna-overlay {
+            position: absolute;
+            bottom: 0; left: 0; width: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
     </style>
 </head>
-<body>
-    <div class="section-container" id="slide1">
-        <div class="animate-left text-center">
-            <h1 class="text-3xl mb-6 font-bold">॥ ॐ ॥</h1>
-            <svg class="w-48 h-48 mx-auto mb-6 text-[#5c1a1b]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>
-            <h2 class="text-2xl font-medium tracking-widest">ॐ Shanti ॐ</h2>
+<body class="font-serif text-lg">
+
+    <div class="bg-pattern"></div>
+
+    <!-- SECTION 1: Welcome Slide (Namaskar) -->
+    <section class="invite-section" id="section-1">
+        <div class="parallax-wrapper">
+            
+            <div class="anim-elem hidden-left flex justify-center mb-8">
+                <!-- Om Symbol -->
+                <svg width="60" height="60" viewBox="0 0 100 100" fill="#C5A059">
+                    <path d="M48,20 C55,20 60,25 60,32 C60,37 57,41 53,43 C58,45 62,51 62,58 C62,68 53,75 42,75 C35,75 30,70 30,70 L34,64 C34,64 38,68 43,68 C49,68 54,63 54,57 C54,51 49,47 43,47 L38,47 L38,41 L42,41 C47,41 51,37 51,32 C51,28 48,25 44,25 C40,25 36,28 34,31 L29,26 C33,22 39,20 48,20 Z M70,40 C70,35 75,30 82,30 C89,30 95,35 95,45 C95,58 85,70 70,75 L67,68 C78,63 86,55 86,45 C86,39 83,36 79,36 C75,36 72,40 70,45 L64,43 C65,39 67,37 70,40 Z M62,15 C62,18 59,20 56,20 C53,20 50,18 50,15 C50,12 53,10 56,10 C59,10 62,12 62,15 Z"/>
+                </svg>
+            </div>
+
+            <!-- Namaskar Hands SVG -->
+            <div class="anim-elem hidden-right delay-100 flex justify-center my-6">
+                <svg width="220" height="280" viewBox="0 0 200 250" class="drop-shadow-md">
+                    <!-- Left Hand -->
+                    <path d="M100,30 C90,60 70,100 60,130 C50,160 30,170 10,190" fill="none" stroke="#C5A059" stroke-width="3" stroke-linecap="round"/>
+                    <path d="M90,45 C82,70 65,110 58,135" fill="none" stroke="#C5A059" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M100,30 C95,50 90,80 85,110 C80,140 70,165 40,185" fill="none" stroke="#C5A059" stroke-width="3" stroke-linecap="round"/>
+                    <!-- Right Hand -->
+                    <path d="M100,30 C110,60 130,100 140,130 C150,160 170,170 190,190" fill="none" stroke="#C5A059" stroke-width="3" stroke-linecap="round"/>
+                    <path d="M110,45 C118,70 135,110 142,135" fill="none" stroke="#C5A059" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M100,30 C105,50 110,80 115,110 C120,140 130,165 160,185" fill="none" stroke="#C5A059" stroke-width="3" stroke-linecap="round"/>
+                    
+                    <!-- Bracelets / Beads -->
+                    <circle cx="35" cy="180" r="4" fill="#C5A059"/>
+                    <circle cx="45" cy="172" r="4" fill="#C5A059"/>
+                    <circle cx="55" cy="165" r="4" fill="#C5A059"/>
+                    
+                    <circle cx="165" cy="180" r="4" fill="#C5A059"/>
+                    <circle cx="155" cy="172" r="4" fill="#C5A059"/>
+                    <circle cx="145" cy="165" r="4" fill="#C5A059"/>
+
+                    <!-- Lotus Base -->
+                    <path d="M100,230 C80,230 60,220 50,210 C70,215 90,220 100,220 C110,220 130,215 150,210 C140,220 120,230 100,230 Z" fill="#C5A059"/>
+                    <path d="M100,220 C85,200 70,190 65,185 C80,195 90,205 100,220 Z" fill="#C5A059"/>
+                    <path d="M100,220 C115,200 130,190 135,185 C120,195 110,205 100,220 Z" fill="#C5A059"/>
+                    
+                    <!-- Sparkles -->
+                    <path d="M30,80 L35,90 L45,95 L35,100 L30,110 L25,100 L15,95 L25,90 Z" fill="#E3C788" transform="scale(0.5) translate(40, -20)"/>
+                    <path d="M170,80 L175,90 L185,95 L175,100 L170,110 L165,100 L155,95 L165,90 Z" fill="#E3C788" transform="scale(0.5) translate(180, 20)"/>
+                </svg>
+            </div>
+
+            <div class="anim-elem hidden-left delay-200 font-cinzel text-3xl md:text-5xl font-bold text-gold tracking-widest mt-8">
+                Om Shanti Om
+            </div>
+            
         </div>
-    </div>
-    <div class="section-container border-t border-[#bf953f]" id="slide2">
-        <div class="animate-right text-center max-w-2xl">
-            <p class="text-xl mb-4">॥ श्री गणेशाय नमः ॥</p>
-            <p class="mb-8 text-sm md:text-base italic">सर्व मंगल मांगल्ये शिवे सर्वार्थ साधिके । शरण्ये त्र्यम्बके गौरी नारायणि नमोस्तुते ॥</p>
-            <h3 class="text-2xl mb-2">Smt. Paramjeet & Sh. Harish</h3>
-            <p class="mb-8">Invite you to celebrate the auspicious Wedding Ceremony of their beloved Son</p>
-            <h1 class="text-6xl md:text-8xl golden-text mb-4 font-serif">Mohit</h1>
-            <p class="text-sm mb-6">(Grand S/o Late Smt. Sangeeta Rani & Sh. Tilak Raj Bharara)</p>
-            <p class="text-2xl italic mb-6">Weds</p>
-            <h1 class="text-6xl md:text-8xl golden-text mb-4 font-serif">Shikha</h1>
-            <p class="text-sm mb-2">(D/o Late Smt. Asha & Late Sh. Avinash Chandra)</p>
-            <p class="text-sm mb-12">(Grand D/o Late Smt. Sumitra Devi & Late Sh. Ganga Ram)</p>
-        </div>
-    </div>
-    <div class="section-container border-t border-[#bf953f]" id="slide3">
-        <div class="animate-left text-center w-full max-w-2xl">
-            <h2 class="text-4xl md:text-5xl golden-text mb-12 italic">Golden Moments</h2>
-            <div class="space-y-12">
-                <div><h3 class="text-2xl font-bold mb-2">Wednesday, 02nd December, 2026</h3><div class="flex justify-between items-center border-b border-dotted border-[#5c1a1b] pb-2"><span class="text-xl">Sagan Ceremony</span><span class="text-xl">10:00 Am</span></div></div>
-                <div><h3 class="text-2xl font-bold mb-2">Thursday, 03rd December, 2026</h3><div class="flex justify-between items-center border-b border-dotted border-[#5c1a1b] pb-2"><span class="text-xl">Dj Night</span><span class="text-xl">07:00 Pm</span></div></div>
-                <div><h3 class="text-2xl font-bold mb-2">Friday, 04th December, 2026</h3><div class="flex justify-between items-center border-b border-dotted border-[#5c1a1b] pb-2 mb-4"><span class="text-xl">Sehrabandi</span><span class="text-xl">5:00 pm</span></div><div class="flex justify-between items-center border-b border-dotted border-[#5c1a1b] pb-2"><span class="text-xl">Ghurchadi</span><span class="text-xl">6:00 pm</span></div></div>
+    </section>
+
+    <!-- SECTION 2: Main Announcement -->
+    <section class="invite-section" id="section-2">
+        <div class="parallax-wrapper px-4 pb-20 relative">
+            
+            <!-- Archway SVG (Top) -->
+            <div class="arch-overlay anim-elem hidden-right">
+                <svg viewBox="0 0 100 30" preserveAspectRatio="none" class="w-full h-24 md:h-40">
+                    <path d="M0,0 L100,0 L100,10 C90,10 85,25 75,25 C65,25 60,10 50,15 C40,10 35,25 25,25 C15,25 10,10 0,10 Z" fill="#E3C788" opacity="0.3"/>
+                    <path d="M0,0 L100,0 L100,8 C90,8 85,20 75,20 C65,20 60,8 50,12 C40,8 35,20 25,20 C15,20 10,8 0,8 Z" fill="#C5A059" opacity="0.5"/>
+                    <path d="M0,0 L100,0 L100,5 C90,5 85,15 75,15 C65,15 60,5 50,8 C40,5 35,15 25,15 C15,15 10,5 0,5 Z" fill="#900000" opacity="0.8"/>
+                </svg>
+            </div>
+
+            <div class="z-10 mt-16 md:mt-24">
+                <div class="anim-elem hidden-left text-maroon font-hindi font-bold text-2xl md:text-3xl mb-3">
+                    ॥ श्री गणेशाय नमः ॥
+                </div>
+                
+                <div class="anim-elem hidden-right delay-100 text-maroon font-hindi text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-10">
+                    सर्व मंगल मांगल्ये शिवे सर्वार्थ साधिके।<br>
+                    शरण्ये त्र्यम्बके गौरि नारायणि नमोस्तुते॥
+                </div>
+
+                <div class="anim-elem hidden-left delay-200 mb-8">
+                    <div class="font-bold text-xl md:text-2xl mb-2 text-maroon">Smt. Paramjeet & Sh. Harish</div>
+                    <div class="italic text-gray-700 text-base md:text-lg">
+                        invite you to celebrate the auspicious Wedding Ceremony of their beloved Son
+                    </div>
+                </div>
+
+                <div class="anim-elem hidden-right delay-300">
+                    <div class="font-cursive text-7xl md:text-8xl text-gold mb-1 drop-shadow-sm">Mohit</div>
+                    <div class="text-sm md:text-base text-gray-600 mb-6">(Grand S/o Late Smt. Sangeeta Rani & Sh. Tilak Raj Bharara)</div>
+                </div>
+
+                <div class="anim-elem hidden-left delay-400 font-cinzel text-3xl text-maroon my-4">- Weds -</div>
+
+                <div class="anim-elem hidden-right delay-500">
+                    <div class="font-cursive text-7xl md:text-8xl text-gold mb-1 drop-shadow-sm">Shikha</div>
+                    <div class="text-sm md:text-base text-gray-600 mb-1">(D/o Late Smt. Asha & Late Sh. Avinash Chandra)</div>
+                    <div class="text-sm md:text-base text-gray-600 mb-6">(Grand D/o Late Smt. Sumitra Devi & Late Sh. Ganga Ram)</div>
+                </div>
+            </div>
+
+            <!-- Flora & Fauna Bottom Decor -->
+            <div class="flora-fauna-overlay anim-elem hidden-left flex justify-between items-end px-4 md:px-20 h-32 md:h-48 opacity-80">
+                <!-- Decorative Elephant (Left) -->
+                <svg viewBox="0 0 100 100" class="w-24 h-24 md:w-32 md:h-32">
+                    <path d="M80,80 L70,80 L70,60 C70,40 50,40 30,50 L20,90 L10,90 L20,40 C30,20 60,10 80,30 C90,40 90,60 85,80 Z" fill="#C5A059"/>
+                    <!-- Howdah / Umbrella -->
+                    <path d="M40,30 L60,30 L50,15 Z" fill="#900000"/>
+                    <rect x="45" y="30" width="10" height="15" fill="#E3C788"/>
+                    <!-- Leg details -->
+                    <rect x="25" y="80" width="10" height="5" fill="#900000"/>
+                    <rect x="70" y="80" width="10" height="5" fill="#900000"/>
+                </svg>
+                
+                <!-- Decorative Peacock (Right) -->
+                <svg viewBox="0 0 100 100" class="w-24 h-24 md:w-32 md:h-32 transform scale-x-[-1]">
+                    <path d="M50,90 C40,80 30,60 40,40 C50,20 70,30 60,50 C50,70 60,80 50,90 Z" fill="#205072"/>
+                    <circle cx="50" cy="35" r="10" fill="#C5A059"/>
+                    <!-- Feathers -->
+                    <path d="M40,40 C20,20 10,40 30,60" fill="none" stroke="#68B2A0" stroke-width="4"/>
+                    <path d="M45,45 C15,35 15,65 35,75" fill="none" stroke="#68B2A0" stroke-width="4"/>
+                    <path d="M50,50 C30,50 30,80 45,90" fill="none" stroke="#68B2A0" stroke-width="4"/>
+                </svg>
             </div>
         </div>
-    </div>
-    <div class="section-container border-t border-[#bf953f]" id="slide4">
-        <div class="animate-right text-center max-w-2xl">
-            <h3 class="text-3xl mb-6 font-bold">Venue</h3>
-            <h2 class="text-4xl golden-text mb-4">The Rosario A Luxury Banquet</h2>
-            <p class="text-lg mb-12">A-1/23 opp dashrath puri Metro Station gate no-1 Dwarka<br>sector -1A Palam Dabri road New Delhi-110046</p>
-            <div class="bg-[#5c1a1b] text-[#fbf8f1] p-6 rounded-lg mb-12"><p class="text-lg italic font-bold">Dhol tashe huye purane Dj ka zamana hai,</p><p class="text-lg font-bold">Mele Chachu ki shadi main jalul jalul aana hai : Shivika Bharara</p></div>
-            <div class="flex justify-between text-left mt-12 pt-8 border-t border-[#bf953f]"><div><h4 class="font-bold text-xl mb-2">R.S.V.P.</h4><p>Manish Bharara</p></div><div class="text-right"><h4 class="font-bold text-xl mb-2">With Best Compliments From:</h4><p>Dadke & Nanke</p></div></div>
+    </section>
+
+    <!-- SECTION 3: Rituals (The Feet Motif) -->
+    <section class="invite-section bg-ritual" id="section-3">
+        <div class="parallax-wrapper px-4 py-12">
+            
+            <div class="border-ritual w-full max-w-md mx-auto aspect-[3/4] flex flex-col items-center justify-center relative shadow-2xl">
+                
+                <!-- Decorative Lotus Corner (Top Left) -->
+                <svg class="absolute top-4 left-4 w-8 h-8 anim-elem hidden-left" viewBox="0 0 50 50">
+                    <path d="M25,50 C15,40 5,30 25,10 C45,30 35,40 25,50 Z" fill="#FAF7EE" opacity="0.8"/>
+                    <path d="M25,50 C20,35 15,25 25,15 C35,25 30,35 25,50 Z" fill="#C5A059"/>
+                </svg>
+                
+                <!-- Decorative Lotus Corner (Bottom Right) -->
+                <svg class="absolute bottom-4 right-4 w-8 h-8 transform rotate-180 anim-elem hidden-right" viewBox="0 0 50 50">
+                    <path d="M25,50 C15,40 5,30 25,10 C45,30 35,40 25,50 Z" fill="#FAF7EE" opacity="0.8"/>
+                    <path d="M25,50 C20,35 15,25 25,15 C35,25 30,35 25,50 Z" fill="#C5A059"/>
+                </svg>
+
+                <div class="anim-elem hidden-left delay-100 font-cinzel text-xl md:text-3xl text-ivory tracking-[0.2em] mb-12 uppercase text-center w-full">
+                    A Sacred Union
+                </div>
+
+                <!-- Feet Motif SVG -->
+                <div class="anim-elem hidden-right delay-200 flex justify-center w-full my-6">
+                    <svg width="240" height="240" viewBox="0 0 200 200">
+                        <!-- Groom Feet (Dhoti & bare feet) -->
+                        <path d="M120,40 L160,40 L150,130 C150,150 120,150 120,130 Z" fill="#FAF7EE"/>
+                        <path d="M120,120 C120,130 110,150 130,160 C140,165 150,155 150,140 Z" fill="#D2A679"/> <!-- Skin tone -->
+                        <path d="M120,110 L160,110 L155,120 L125,120 Z" fill="#C5A059"/> <!-- Dhoti Border -->
+                        <circle cx="125" cy="155" r="3" fill="#D2A679"/> <!-- Toes -->
+                        <circle cx="132" cy="158" r="2.5" fill="#D2A679"/>
+                        <circle cx="138" cy="159" r="2" fill="#D2A679"/>
+
+                        <!-- Bride Feet (Saree, Anklets, Alta) -->
+                        <path d="M40,60 L90,60 L100,140 C100,160 70,160 50,140 Z" fill="#FAF7EE"/>
+                        <path d="M50,140 C50,150 40,170 60,180 C70,185 90,175 90,150 Z" fill="#D2A679"/> <!-- Skin tone -->
+                        <!-- Alta (Red dye on feet) -->
+                        <path d="M55,160 C50,165 50,175 60,180 C65,182 85,175 85,160 Z" fill="#900000" opacity="0.6"/>
+                        <!-- Saree Border -->
+                        <path d="M45,130 L95,130 L90,140 L50,140 Z" fill="#C5A059"/>
+                        <path d="M45,125 L95,125" stroke="#900000" stroke-width="2"/>
+                        <!-- Anklets (Payal) -->
+                        <path d="M55,145 C65,150 75,150 85,145" fill="none" stroke="#FAF7EE" stroke-width="3" stroke-dasharray="2 2"/>
+                        <path d="M53,150 C63,155 77,155 87,150" fill="none" stroke="#C5A059" stroke-width="3"/>
+                        
+                        <!-- Toes with Alta -->
+                        <circle cx="58" cy="175" r="3" fill="#900000"/>
+                        <circle cx="65" cy="178" r="2.5" fill="#900000"/>
+                        <circle cx="72" cy="179" r="2" fill="#900000"/>
+                    </svg>
+                </div>
+                
+                <div class="anim-elem hidden-left delay-300 italic font-serif text-ivory/80 text-center mt-8 px-4 text-sm md:text-base">
+                    Two souls, one path, bound together for eternity.
+                </div>
+            </div>
+
         </div>
-    </div>
+    </section>
+
+    <!-- SECTION 4: Events Slide 1 (Sagan & DJ) -->
+    <section class="invite-section" id="section-4">
+        <div class="parallax-wrapper px-4">
+            
+            <div class="anim-elem hidden-left font-cursive text-6xl md:text-8xl text-gold mb-16 drop-shadow-sm">
+                Pre-Wedding Festivities
+            </div>
+
+            <!-- Sagan Ceremony -->
+            <div class="w-full max-w-3xl mb-16">
+                <div class="anim-elem hidden-right delay-100 flex justify-center mb-4">
+                    <!-- Kalash Motif -->
+                    <svg width="60" height="60" viewBox="0 0 100 100">
+                        <path d="M40,40 L60,40 L70,80 L30,80 Z" fill="#C5A059"/>
+                        <circle cx="50" cy="30" r="15" fill="#900000"/>
+                        <path d="M50,15 L35,-5 L65,-5 Z" fill="#228B22" transform="translate(0, 15)"/> <!-- Leaves -->
+                        <path d="M30,80 C30,90 70,90 70,80 Z" fill="#900000"/>
+                    </svg>
+                </div>
+                
+                <h3 class="anim-elem hidden-left delay-200 text-2xl md:text-3xl text-maroon font-bold mb-4 tracking-wide text-center">
+                    Wednesday, 02nd December, 2026
+                </h3>
+                
+                <div class="anim-elem hidden-right delay-300 flex items-end justify-between w-full text-xl md:text-2xl font-serif text-gray-800">
+                    <span class="font-medium whitespace-nowrap">Sagan Ceremony</span>
+                    <span class="dotted-line"></span>
+                    <span class="whitespace-nowrap font-bold text-maroon">10:00 AM</span>
+                </div>
+            </div>
+
+            <!-- DJ Night -->
+            <div class="w-full max-w-3xl">
+                <div class="anim-elem hidden-left delay-200 flex justify-center mb-4">
+                    <!-- Music/Dance Motif -->
+                    <svg width="60" height="60" viewBox="0 0 100 100">
+                        <circle cx="30" cy="70" r="10" fill="#900000"/>
+                        <rect x="35" y="30" width="4" height="40" fill="#C5A059"/>
+                        <path d="M35,30 L75,20 L75,35 L35,45 Z" fill="#C5A059"/>
+                        <circle cx="70" cy="60" r="10" fill="#900000"/>
+                        <rect x="75" y="20" width="4" height="40" fill="#C5A059"/>
+                    </svg>
+                </div>
+                
+                <h3 class="anim-elem hidden-right delay-300 text-2xl md:text-3xl text-maroon font-bold mb-4 tracking-wide text-center">
+                    Thursday, 03rd December, 2026
+                </h3>
+                
+                <div class="anim-elem hidden-left delay-400 flex items-end justify-between w-full text-xl md:text-2xl font-serif text-gray-800">
+                    <span class="font-medium whitespace-nowrap">DJ Night</span>
+                    <span class="dotted-line"></span>
+                    <span class="whitespace-nowrap font-bold text-maroon">07:00 PM</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 5: Events Slide 2 (Wedding Day) -->
+    <section class="invite-section" id="section-5">
+        <div class="parallax-wrapper px-4">
+            
+            <div class="anim-elem hidden-right font-cursive text-6xl md:text-8xl text-gold mb-16 drop-shadow-sm">
+                The Wedding Day
+            </div>
+
+            <div class="w-full max-w-3xl">
+                
+                <div class="anim-elem hidden-left delay-100 flex justify-center mb-6">
+                    <!-- Horse / Groom Motif -->
+                    <svg width="80" height="80" viewBox="0 0 100 100" class="drop-shadow-sm">
+                        <!-- Horse -->
+                        <path d="M20,60 C20,40 40,30 60,30 C70,30 80,40 80,50 L85,45 L90,55 L80,60 C80,80 60,90 40,90 C30,90 20,80 20,60 Z" fill="#E3C788"/>
+                        <!-- Legs -->
+                        <path d="M30,80 L30,95 L25,95 L25,80 Z" fill="#C5A059"/>
+                        <path d="M40,85 L40,100 L35,100 L35,85 Z" fill="#C5A059"/>
+                        <path d="M60,85 L60,100 L55,100 L55,85 Z" fill="#C5A059"/>
+                        <path d="M70,80 L70,95 L65,95 L65,80 Z" fill="#C5A059"/>
+                        <!-- Decor -->
+                        <path d="M30,50 L70,50 L60,70 L40,70 Z" fill="#900000"/>
+                        <!-- Rider (Simplified) -->
+                        <circle cx="50" cy="15" r="8" fill="#900000"/>
+                        <path d="M45,25 L55,25 L60,40 L40,40 Z" fill="#C5A059"/>
+                    </svg>
+                </div>
+
+                <h3 class="anim-elem hidden-right delay-200 text-2xl md:text-3xl text-maroon font-bold mb-10 tracking-wide text-center">
+                    Friday, 04th December, 2026
+                </h3>
+                
+                <div class="anim-elem hidden-left delay-300 flex items-end justify-between w-full text-xl md:text-2xl font-serif text-gray-800 mb-8">
+                    <span class="font-medium whitespace-nowrap">Sehrabandi</span>
+                    <span class="dotted-line"></span>
+                    <span class="whitespace-nowrap font-bold text-maroon">5:00 PM</span>
+                </div>
+                
+                <div class="anim-elem hidden-right delay-400 flex items-end justify-between w-full text-xl md:text-2xl font-serif text-gray-800">
+                    <span class="font-medium whitespace-nowrap">Ghurchadi</span>
+                    <span class="dotted-line"></span>
+                    <span class="whitespace-nowrap font-bold text-maroon">6:00 PM</span>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 6: Venue & Closing -->
+    <section class="invite-section" id="section-6">
+        <div class="parallax-wrapper px-4">
+            
+            <h3 class="anim-elem hidden-left font-cinzel text-xl md:text-2xl text-gold uppercase tracking-[0.3em] mb-4">
+                Venue
+            </h3>
+            
+            <h2 class="anim-elem hidden-right delay-100 font-serif text-4xl md:text-5xl text-maroon font-bold mb-6">
+                The Rosario A Luxury Banquet
+            </h2>
+            
+            <p class="anim-elem hidden-left delay-200 text-base md:text-lg text-gray-700 max-w-lg mx-auto leading-relaxed mb-12 border-b-2 border-gold/30 pb-8">
+                A-1/23 opp dashrath puri Metro Station gate no-1<br>
+                Dwarka sector -1A Palam Dabri road<br>
+                New Delhi-110046
+            </p>
+
+            <div class="anim-elem hidden-right delay-300 text-maroon italic font-semibold text-lg md:text-xl max-w-2xl px-4 leading-relaxed mb-16">
+                "Dhol tashe huye purane Dj ka zamana hai,<br>
+                Mele Chachu ki shadi main jalul jalul aana hai : Shivika Bharara"
+            </div>
+
+            <div class="anim-elem hidden-left delay-400 flex flex-col md:flex-row justify-between items-center md:items-end w-full max-w-3xl px-6 py-6 bg-white/50 rounded-xl border border-gold/40 shadow-sm">
+                <div class="text-center md:text-left mb-6 md:mb-0">
+                    <div class="font-cinzel font-bold text-xl text-gold mb-1 tracking-widest">R.S.V.P.</div>
+                    <div class="font-medium text-lg text-maroon">Manish Bharara</div>
+                </div>
+                
+                <div class="text-center md:text-right">
+                    <div class="italic text-gray-600 mb-1">With Best Compliments From:</div>
+                    <div class="font-bold text-xl text-maroon">Dadke & Nanke</div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Interactive Animation Scripts -->
     <script>
-        const sections = document.querySelectorAll('.section-container');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) { entry.target.classList.add('in-view'); entry.target.classList.remove('scroll-out'); }
-            });
-        }, { threshold: 0.15 });
-        sections.forEach(section => observer.observe(section));
-        window.addEventListener('scroll', () => {
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.invite-section');
+
+            // --- 1. Entry Animations (Intersection Observer) ---
+            // Triggers elements to slide in from the sides when scrolled into view.
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15 
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const animElements = entry.target.querySelectorAll('.anim-elem');
+                        animElements.forEach(el => el.classList.add('is-visible'));
+                    }
+                });
+            }, observerOptions);
+
             sections.forEach(section => {
-                const rect = section.getBoundingClientRect();
-                if (rect.top < -50 && rect.bottom > 0) { section.classList.add('scroll-out'); } 
-                else if (rect.top >= -50) { section.classList.remove('scroll-out'); }
+                observer.observe(section);
+            });
+
+            // --- 2. Exit Animations (Scroll Event for Parallax) ---
+            // Triggers elements to move upward and fade out when the user scrolls past the section.
+            window.addEventListener('scroll', () => {
+                const scrollY = window.scrollY;
+                const windowHeight = window.innerHeight;
+
+                sections.forEach(section => {
+                    const parallaxWrapper = section.querySelector('.parallax-wrapper');
+                    if (!parallaxWrapper) return;
+
+                    const secTop = section.offsetTop;
+                    const secHeight = section.offsetHeight;
+
+                    // Calculate how far we've scrolled *past* the top of this section
+                    const scrolledPast = scrollY - secTop;
+
+                    if (scrolledPast > 0 && scrolledPast < secHeight) {
+                        // Section is moving out of the top of the viewport
+                        
+                        // Move up 0.7x faster than standard scroll for parallax effect
+                        const translateY = -(scrolledPast * 0.7); 
+                        
+                        // Fade out completely by the time we scroll 50% through the section
+                        let opacity = 1 - (scrolledPast / (secHeight * 0.5));
+                        if (opacity < 0) opacity = 0;
+
+                        // Apply the inline styles
+                        parallaxWrapper.style.transform = `translateY(${translateY}px)`;
+                        parallaxWrapper.style.opacity = opacity;
+                    } 
+                    else if (scrolledPast <= 0) {
+                        // Reset if we scroll back up so it's fully visible again
+                        parallaxWrapper.style.transform = `translateY(0px)`;
+                        parallaxWrapper.style.opacity = 1;
+                    }
+                });
             });
         });
     </script>
